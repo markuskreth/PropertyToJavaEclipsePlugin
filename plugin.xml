@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension
+         point="org.eclipse.ui.commands">
+		<command
+            defaultHandler="de.kreth.eclipse.propertytojavaplugin.handlers.GeneratePropertyClassHandler"
+            id="PropertyToJavaPlugin.command1"
+            name="Generate Java for Properties">
+            <commandParameter 
+		         id="de.kreth.eclipse.propertytojavaplugin.filePathParameter" 
+		         name="File Path"
+		         optional="false">
+	         </commandParameter>
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+            commandId="PropertyToJavaPlugin.command1"
+            class="de.kreth.eclipse.propertytojavaplugin.handlers.GeneratePropertyClassHandler">
+		</handler>
+	</extension>
+	<extension
+         point="org.eclipse.ui.menus">
+		<menuContribution
+            locationURI="popup:org.eclipse.jdt.ui.source.menu?after=generateGroup">
+			<command 
+               commandId="PropertyToJavaPlugin.command1"
+               id="helloworld.menu.item"
+               label="Generate Java for Properties"
+               tooltip="Generate Jave Code for all Keys"
+               >
+               
+<!--               icon="icons/Zeichnung.svg" -->
+               <visibleWhen
+       checkEnabled="false">
+   <with variable="activeMenuSelection">
+      <iterate
+           ifEmpty="false">
+         <adapt type="org.eclipse.core.resources.IResource">
+              <test property="org.eclipse.core.resources.extension" value="properties" />
+         </adapt>
+      </iterate>
+   </with>
+</visibleWhen>
+<!--
+        <visibleWhen
+           checkEnabled="false">
+           <with variable="activeMenuSelection">
+              <test
+						property="org.eclipse.core.resources.extension"
+						value="properties">
+              </test>
+           </with>
+        </visibleWhen>-->
+				<!--<visibleWhen>
+					<test
+						property="org.eclipse.core.resources.extension"
+						value="properties">
+					</test>
+				</visibleWhen>-->
+			</command>
+		</menuContribution>
+	</extension>
+
+</plugin>
