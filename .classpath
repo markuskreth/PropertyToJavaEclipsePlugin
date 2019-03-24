@@ -26,6 +26,5 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="E:/SHARE/.m2_repo/org/mockito/mockito-core/2.24.5/mockito-core-2.24.5.jar" sourcepath="E:/SHARE/.m2_repo/org/mockito/mockito-core/2.24.5/mockito-core-2.24.5-sources.jar"/>
-	<classpathentry kind="lib" path="libs/batik-all-1.11.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
