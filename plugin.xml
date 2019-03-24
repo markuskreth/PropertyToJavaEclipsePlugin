@@ -28,10 +28,9 @@
                commandId="PropertyToJavaPlugin.command1"
                id="helloworld.menu.item"
                label="Generate Java for Properties"
+               icon="icons/GeneratorIcon.png"
                tooltip="Generate Jave Code for all Keys"
                >
-               
-<!--               icon="icons/Zeichnung.svg" -->
                <visibleWhen
        checkEnabled="false">
    <with variable="activeMenuSelection">
