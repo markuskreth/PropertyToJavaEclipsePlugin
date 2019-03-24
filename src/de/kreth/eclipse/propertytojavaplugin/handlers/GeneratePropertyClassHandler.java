@@ -58,13 +58,16 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 		IFile propertyFile = extractSelectedFile(arg0);
 		if (propertyFile != null) {
 
-			Optional<File> sourcePaths = extractSources(propertyFile.getProject());
+			List<File> sourcePaths = extractSources(propertyFile.getProject());
+			Optional<File> targetPath = extractTarget(sourcePaths);
+			String packageName = extractPackage(sourcePaths);
 
 			log.log(new Status(IStatus.OK, Activator.PluginID, "Generating Java class for " + propertyFile));
-			log.log(new Status(IStatus.OK, Activator.PluginID, "Generating Java class to " + sourcePaths));
+			log.log(new Status(IStatus.OK, Activator.PluginID,
+					"Generating Java class to " + sourcePaths + " with package name = " + packageName));
 
 			try {
-				ProjectConfiguration config = createConfiguration(sourcePaths, propertyFile);
+				ProjectConfiguration config = createConfiguration(targetPath, propertyFile, packageName);
 				if (config != null) {
 					Generator generator = new Generator(config);
 					generator.start();
@@ -82,6 +85,38 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 		return null;
 	}
 
+	private String extractPackage(List<File> sourcePaths) {
+		File mainSources = null;
+		String packageName = null;
+
+		if (sourcePaths.size() > 1) {
+			mainSources = sourcePaths.get(1);
+		}
+		else if (sourcePaths.size() == 1) {
+			mainSources = sourcePaths.get(0);
+		}
+		if (mainSources != null) {
+			File[] files = mainSources.listFiles();
+			while (files.length == 1 && files[0].isDirectory()) {
+				files = files[0].listFiles();
+			}
+			if (files.length != 0) {
+				packageName = files[0].getParentFile().getAbsolutePath()
+						.substring(mainSources.getAbsolutePath().length() + 1).replace(File.separatorChar, '.');
+			}
+		}
+		return packageName;
+	}
+
+	private Optional<File> extractTarget(List<File> sourcePaths) {
+
+		if (!sourcePaths.isEmpty()) {
+			sourcePaths.sort(GeneratePropertyClassHandler::sortSource);
+			return Optional.of(sourcePaths.get(0));
+		}
+		return Optional.empty();
+	}
+
 	public void logException(IFile propertyFile, Exception e) {
 		log.log(new Status(IStatus.ERROR, Activator.PluginID, "Error starting Generator", e));
 		StringWriter out = new StringWriter();
@@ -92,7 +127,7 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 						+ propertyFile.getProject().getName() + "!\n" + out.toString());
 	}
 
-	private ProjectConfiguration createConfiguration(Optional<File> sourcePaths, IFile propertyFile)
+	private ProjectConfiguration createConfiguration(Optional<File> sourcePaths, IFile propertyFile, String packageName)
 			throws IOException {
 
 		IPath propertyFileLocation = propertyFile.getLocation();
@@ -102,7 +137,6 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 		if (sourcePaths.isPresent()) {
 
 			Path rootPath = sourcePaths.get().toPath();
-			String packageName = null;
 			return new ProjectConfiguration(input, rootPath, packageName);
 		}
 		else {
@@ -124,7 +158,7 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 		return null;
 	}
 
-	private Optional<File> extractSources(IProject project) {
+	private List<File> extractSources(IProject project) {
 
 		List<File> sourcePaths = new ArrayList<>();
 
@@ -146,12 +180,7 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 		catch (Exception e) {
 			e.printStackTrace();
 		}
-
-		if (!sourcePaths.isEmpty()) {
-			sourcePaths.sort(GeneratePropertyClassHandler::sortSource);
-			return Optional.of(sourcePaths.get(0));
-		}
-		return Optional.empty();
+		return sourcePaths;
 	}
 
 	public static int sortSource(File file1, File file2) {

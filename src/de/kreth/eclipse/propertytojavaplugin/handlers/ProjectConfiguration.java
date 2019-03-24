@@ -1,5 +1,6 @@
 package de.kreth.eclipse.propertytojavaplugin.handlers;
 
+import java.io.File;
 import java.io.Reader;
 import java.nio.file.Path;
 import java.util.Map;
@@ -33,6 +34,13 @@ public class ProjectConfiguration implements Configuration {
 
 	@Override
 	public Path getRootPath() {
+		if (packageName != null) {
+			File targetPath = new File(rootPath.toFile(), packageName.replace('.', File.separatorChar));
+			if (!targetPath.exists()) {
+				targetPath.mkdirs();
+			}
+			return targetPath.toPath();
+		}
 		return rootPath;
 	}
 }
