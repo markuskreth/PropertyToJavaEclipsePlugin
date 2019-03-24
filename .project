@@ -25,11 +25,4 @@
 		<nature>org.eclipse.pde.PluginNature</nature>
 		<nature>org.eclipse.jdt.core.javanature</nature>
 	</natures>
-	<linkedResources>
-		<link>
-			<name>libs/PropertyToJavaGenerator-0.0.1-SNAPSHOT.jar</name>
-			<type>1</type>
-			<locationURI>WORKSPACE_LOC/PropertyToJavaGenerator/target/PropertyToJavaGenerator-0.0.1-SNAPSHOT.jar</locationURI>
-		</link>
-	</linkedResources>
 </projectDescription>
