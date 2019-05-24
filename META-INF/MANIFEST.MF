@@ -73,4 +73,4 @@ Bundle-ClassPath: libs/PropertyToJavaGenerator-0.0.3.jar,
  libs/freemarker-2.3.28.jar,
  libs/slf4j-api-1.7.21.jar,
  .
-Bundle-Vendor: Markus Kreth
+Bundle-Vendor: https://github.com/markuskreth/PropertyToJavaEclipsePlugin
