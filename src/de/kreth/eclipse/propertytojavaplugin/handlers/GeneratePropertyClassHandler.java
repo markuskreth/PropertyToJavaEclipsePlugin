@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 import java.io.StringWriter;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.resources.IFile;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.ILog;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
@@ -62,12 +64,22 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 			Optional<File> targetPath = extractTarget(sourcePaths);
 			String packageName = extractPackage(sourcePaths);
 
+			Charset charset;
+			try {
+				String charsetName = propertyFile.getProject().getDefaultCharset();
+				charset = Charset.forName(charsetName);
+			}
+			catch (CoreException e1) {
+				log.log(new Status(IStatus.ERROR, Activator.PluginID,
+						"Project setting for charset not found. using system default"));
+				charset = Charset.defaultCharset();
+			}
 			log.log(new Status(IStatus.OK, Activator.PluginID, "Generating Java class for " + propertyFile));
 			log.log(new Status(IStatus.OK, Activator.PluginID,
 					"Generating Java class to " + sourcePaths + " with package name = " + packageName));
 
 			try {
-				ProjectConfiguration config = createConfiguration(targetPath, propertyFile, packageName);
+				ProjectConfiguration config = createConfiguration(targetPath, propertyFile, packageName, charset);
 				if (config != null) {
 					Generator generator = new Generator(config);
 					generator.start();
@@ -127,7 +139,8 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 						+ propertyFile.getProject().getName() + "!\n" + out.toString());
 	}
 
-	private ProjectConfiguration createConfiguration(Optional<File> sourcePaths, IFile propertyFile, String packageName)
+	private ProjectConfiguration createConfiguration(Optional<File> sourcePaths, IFile propertyFile, String packageName,
+			Charset charset)
 			throws IOException {
 
 		IPath propertyFileLocation = propertyFile.getLocation();
@@ -137,7 +150,7 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 		if (sourcePaths.isPresent()) {
 
 			Path rootPath = sourcePaths.get().toPath();
-			return new ProjectConfiguration(input, rootPath, packageName);
+			return new ProjectConfiguration(input, rootPath, packageName, charset);
 		}
 		else {
 			return null;

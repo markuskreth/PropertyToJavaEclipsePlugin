@@ -2,6 +2,7 @@ package de.kreth.eclipse.propertytojavaplugin.handlers;
 
 import java.io.File;
 import java.io.Reader;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
 import java.util.Map;
 
@@ -15,11 +16,14 @@ public class ProjectConfiguration implements Configuration {
 
 	private final String packageName;
 
-	public ProjectConfiguration(Map<String, Reader> input, Path rootPath, String packageName) {
+	private final Charset charset;
+
+	public ProjectConfiguration(Map<String, Reader> input, Path rootPath, String packageName, Charset charset) {
 		super();
 		this.input = input;
 		this.rootPath = rootPath;
 		this.packageName = packageName;
+		this.charset = charset;
 	}
 
 	@Override
@@ -42,5 +46,10 @@ public class ProjectConfiguration implements Configuration {
 			return targetPath.toPath();
 		}
 		return rootPath;
+	}
+
+	@Override
+	public Charset outputCharset() {
+		return charset;
 	}
 }
