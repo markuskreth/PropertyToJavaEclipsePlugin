@@ -8,6 +8,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/PropertyToJavaGenerator"/>
+	<classpathentry exported="true" kind="lib" path="libs/PropertyToJavaGenerator-0.0.3.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-11">
 		<attributes>
 			<attribute name="module" value="true"/>
@@ -18,7 +19,6 @@
 	<classpathentry exported="true" kind="lib" path="libs/commons-text-1.6.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/freemarker-2.3.28.jar"/>
 	<classpathentry exported="true" kind="lib" path="libs/slf4j-api-1.7.21.jar"/>
-	<classpathentry exported="true" kind="lib" path="libs/PropertyToJavaGenerator-0.0.1-SNAPSHOT.jar" sourcepath="/PropertyToJavaGenerator/src/main/java"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="lib" path="E:/SHARE/.m2_repo/junit/junit/4.12/junit-4.12.jar">
 		<attributes>

@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: PropertyToJavaEclipsePlugin
 Bundle-SymbolicName: PropertyToJavaEclipsePlugin;singleton:=true
-Bundle-Version: 1.0.0.qualifier
+Bundle-Version: 2.0.0.qualifier
 Bundle-Activator: de.kreth.eclipse.propertytojavaplugin.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
@@ -72,7 +72,7 @@ Export-Package: de.kreth.eclipse.propertytojavaplugin;uses:="org.osgi.framework"
    org.eclipse.jface.action,
    org.eclipse.core.commands,
    org.eclipse.jface.viewers"
-Bundle-ClassPath: libs/PropertyToJavaGenerator-0.0.1-SNAPSHOT.jar,
+Bundle-ClassPath: libs/PropertyToJavaGenerator-0.0.3.jar,
  libs/commons-cli-1.4.jar,
  libs/commons-lang3-3.8.1.jar,
  libs/commons-text-1.6.jar,
