@@ -93,7 +93,7 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 				}
 			}
 			catch (IOException | GeneratorException e) {
-				logException(propertyFile, e);
+				logException(propertyFile.getProject(), e);
 			}
 		}
 		return null;
@@ -131,14 +131,14 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 		return Optional.empty();
 	}
 
-	public void logException(IFile propertyFile, Exception e) {
+	public void logException(IProject iProject, Exception e) {
 		log.log(new Status(IStatus.ERROR, Activator.PluginID, "Error starting Generator", e));
 		StringWriter out = new StringWriter();
 		PrintWriter writer = new PrintWriter(out);
 		e.printStackTrace(writer);
 		MessageDialog.openError(null, "Generator not started!",
 				"Error starting Generator for project "
-						+ propertyFile.getProject().getName() + "!\n" + out.toString());
+						+ iProject.getName() + "!\n" + out.toString());
 	}
 
 	private ProjectConfiguration createConfiguration(Optional<File> sourcePaths, IFile propertyFile, String packageName,
@@ -189,11 +189,11 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 				}
 			}
 			catch (JavaModelException e) {
-				e.printStackTrace();
+				logException(project, e);
 			}
 		}
 		catch (Exception e) {
-			e.printStackTrace();
+			logException(project, e);
 		}
 		return sourcePaths;
 	}
