@@ -83,6 +83,8 @@ public class GeneratePropertyClassHandler extends AbstractHandler {
 				if (config != null) {
 					Generator generator = new Generator(config);
 					generator.start();
+					log.log(new Status(IStatus.INFO, Activator.PluginID, "Successfully generated Java class for "
+							+ propertyFile + " to " + sourcePaths + " with package name = " + packageName));
 				}
 				else {
 					MessageDialog.openWarning(null, "Generator not started!",
